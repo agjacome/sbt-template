@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+#
+# sbt-template, scala/sbt base project generator
+# author: Alberto G. Jácome <agjacome@gmail.com>
+
 set -e
 
 create_project() {
