@@ -1,0 +1,14 @@
+# ~/.tmuxinator/NAME.yml
+
+name: NAME
+root: PATH
+
+windows:
+    - vim:
+        layout: baa3,239x61,0,0[239x42,0,0,9,239x18,0,43,12]
+        panes:
+            - vim -c 'set wildignore=*target*'
+            - scala
+    - sbt: ./sbt
+    - conf: vim build.sbt
+    - bash: ls -la

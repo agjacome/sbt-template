@@ -1,0 +1,9 @@
+sbt
+
+*.cache
+*.class
+*.log
+
+target/
+lib_managed/
+src_managed/
