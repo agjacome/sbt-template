@@ -6,7 +6,7 @@
 set -e
 
 create_project() {
-    [[ $create_dir ]] && mkdir -p $(dirname $path)
+    [[ $create_dir ]] && mkdir -p "$path"
 
     bootstrap_project_files
 
@@ -16,7 +16,7 @@ create_project() {
 }
 
 bootstrap_project_files() {
-    cp -r "$script_path/sbt-project" "$path"
+    cp -r "$script_path/sbt-project/." "$path"
     [[ $create_git ]] || remove_git_files
 
     sed -i -e "s/NAME/$name/g" "$path/build.sbt" "$path/README.md"
@@ -93,4 +93,3 @@ declare -r path="$(realpath ${1:-$(pwd)})"
 declare -r name="$(echo "$(basename "$path")" | sed -e 's/[-_]\([a-z]\)/\u\1/g' | sed -e 's/.*/\u&/')"
 
 create_project
-
