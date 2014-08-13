@@ -6,48 +6,45 @@
 set -e
 
 create_project() {
-    [[ $create_dir ]] && mkdir -p "$path"
-
+    [[ $create_dir ]] && mkdir -p $path
     bootstrap_project_files
 
-    [[ $create_git ]] && git init -q "$path"
+    [[ $create_git ]] && git init -q $path
     [[ $create_sbt ]] && download_sbt_script
     [[ $create_mux ]] && create_mux_project
 }
 
 bootstrap_project_files() {
-    cp -r "$script_path/sbt-project/." "$path"
-    [[ $create_git ]] || remove_git_files
-
+    cp -r "$script_path/sbt-project/." $path
     sed -i -e "s/NAME/$name/g" "$path/build.sbt" "$path/README.md"
+    [[ $create_git ]] || remove_git_config
 }
 
-remove_git_files() {
-    sed -i -e "/git/,+1d" "$path/project/plugins.sbt"
-    echo "version in ThisBuild := \"0.1\"" > "$path/version.sbt"
-    rm "$path"/.gitignore
+remove_git_config() {
+    sed -i -e '/git/,+1d' "$path/project/plugins.sbt"
+    echo 'version in ThisBuild := "0.1"' > "$path/version.sbt"
 }
 
 download_sbt_script() {
     local sbt_file="$path/sbt"
-    curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > "$sbt_file"
-    chmod 0755 "$sbt_file"
+    curl -s https://raw.githubusercontent.com/paulp/sbt-extras/master/sbt > $sbt_file
+    chmod 0755 $sbt_file
 }
 
 create_mux_project() {
-    local title="$(basename $path)"
+    local title=$(basename $path)
     local dest="$HOME/.tmuxinator/${title}.yml"
     local template=$(choose_mux_template)
 
-    mkdir -p "$(dirname $dest)"
-    cp "$script_path/mux-project/$template" "$dest"
-    sed -i -e "s/NAME/$title/g" -e "s/PATH/$(echo $path | sed -e 's/[\/&]/\\&/g')/g" "$dest"
+    mkdir -p $(dirname $dest)
+    cp "$script_path/mux-project/$template" $dest
+    sed -i -e "s/NAME/$title/g" -e "s/PATH/$(echo $path | sed -e 's/[\/&]/\\&/g')/g" $dest
 }
 
 choose_mux_template() {
-    local template="project"
-    [[ $create_git ]] && template+="-git"
-    [[ $create_sbt ]] && template+="-sbt"
+    local template='project'
+    [[ $create_git ]] && template+='-git'
+    [[ $create_sbt ]] && template+='-sbt'
     echo "${template}.yml"
 }
 
@@ -73,12 +70,12 @@ Available options:
 EOM
 }
 
-declare -r script_path="$(cd "$(dirname "$0")" && pwd)"
-declare -r script_name="${script_path##*/}"
+declare -r script_path=$(cd $(dirname $0) && pwd)
+declare -r script_name=${script_path##*/}
 
 OPTIND=1
-while getopts "ghmst" opt; do
-    case "$opt" in
+while getopts 'ghmst' opt; do
+    case $opt in
         h) show_usage && exit 0;;
         m) declare -r create_dir=true;;
         g) declare -r create_git=true;;
@@ -89,7 +86,7 @@ while getopts "ghmst" opt; do
 done
 shift $((OPTIND - 1))
 
-declare -r path="$(realpath ${1:-$(pwd)})"
-declare -r name="$(echo "$(basename "$path")" | sed -e 's/[-_]\([a-z]\)/\u\1/g' | sed -e 's/.*/\u&/')"
+declare -r path=$(realpath ${1:-$(pwd)})
+declare -r name=$(echo $(basename $path) | sed -e 's/[-_]\([a-z]\)/\u\1/g' | sed -e 's/.*/\u&/')
 
 create_project
