@@ -23,9 +23,9 @@ scalacOptions ++= Seq(
 
 // project dependencies
 libraryDependencies ++= Seq(
-  "org.scala-lang.modules" %% "scala-async" % "0.9.2",
-  "org.scalaz"             %% "scalaz-core" % "7.1.0",
-  "com.chuusai"            %% "shapeless"   % "2.0.0"
+  "org.scalaz"                 %% "scalaz-core"  % "7.1.0",
+  "com.chuusai"                %% "shapeless"    % "2.0.0",
+  "com.github.julien-truffaut" %% "monocle-core" % "0.5.0"
 )
 
 // testing dependencies
@@ -33,3 +33,5 @@ libraryDependencies ++= Seq(
   "org.scalatest"  %% "scalatest"  % "2.2.1"  % "test",
   "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
 )
+
+shellPrompt := { state => Project.extract(state).currentRef.project + " > " }
