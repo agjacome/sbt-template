@@ -10,15 +10,15 @@ scalacOptions ++= Seq(
   "-language:higherKinds",
   "-language:implicitConversions",
   "-unchecked",
-  "-Xlint",
+  // "-Xfatal-warnings",
   "-Xfuture",
-  // "-Xfatal-warnings"
+  "-Xlint",
   "-Yno-adapted-args",
+  // "-Yno-imports",
+  // "-Yno-predef",
   "-Ywarn-dead-code",
   "-Ywarn-numeric-widen",
   "-Ywarn-value-discard"
-  // "-Yno-predef"
-  // "-Yno-imports"
 )
 
 // project dependencies
