@@ -23,9 +23,11 @@ scalacOptions ++= Seq(
 
 // project dependencies
 libraryDependencies ++= Seq(
-  "org.scalaz"                 %% "scalaz-core"  % "7.1.0",
-  "com.chuusai"                %% "shapeless"    % "2.0.0",
-  "com.github.julien-truffaut" %% "monocle-core" % "0.5.0"
+  "org.scalaz"                 %% "scalaz-core"      % "7.1.0",
+  "org.scalaz"                 %% "scalaz-effect"    % "7.1.0",
+  "com.chuusai"                %% "shapeless"        % "2.0.0",
+  "org.typelevel"              %% "shapeless-scalaz" % "0.3"  ,
+  "com.github.julien-truffaut" %% "monocle-core"     % "0.5.1"
 )
 
 // testing dependencies
@@ -34,4 +36,4 @@ libraryDependencies ++= Seq(
   "org.scalacheck" %% "scalacheck" % "1.11.5" % "test"
 )
 
-shellPrompt := { state => Project.extract(state).currentRef.project + " > " }
+shellPrompt := { state => Project.extract(state).currentRef.project + " » " }
